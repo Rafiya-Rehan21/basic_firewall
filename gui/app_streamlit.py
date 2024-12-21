@@ -1,4 +1,5 @@
 import streamlit as st
+import plotly.graph_objects as go
 from firewall.rules import (
     add_ip_to_blocklist,
     remove_ip_from_blocklist,
@@ -37,6 +38,7 @@ class FirewallApp:
             "Clear Rules",
             "IP Simulation",
             "Port Simulation",
+            "Firewall Statistics",  # New option
         ]
         self.selected_option = st.sidebar.radio("Select an option", options)
 
@@ -56,6 +58,8 @@ class FirewallApp:
             self.ip_simulation_frame()
         elif self.selected_option == "Port Simulation":
             self.port_simulation_frame()
+        elif self.selected_option == "Firewall Statistics":
+            self.firewall_statistics_page()  # New page for stats
             
     def home_page(self):
         """Display the home page."""
@@ -66,13 +70,9 @@ class FirewallApp:
     def ip_management_frame(self):
         """Manage blocked IPs."""
         st.header("IP Management")
-
-        # Input section
         col1, col2 = st.columns([3, 1])
         with col1:
             ip = st.text_input("IP Address to Block/Unblock", "")
-
-        # Buttons placed below the input field and side by side
         col1, col2 = st.columns(2)
         with col1:
             if st.button("Block IP"):
@@ -84,8 +84,6 @@ class FirewallApp:
                 if ip:
                     message = remove_ip_from_blocklist(ip)
                     display_message(message, success="unblocked" in message)
-
-        # Blocked IPs List
         st.subheader("Blocked IPs")
         for blocked_ip in blocked_ips:
             col1, col2 = st.columns([3, 1])
@@ -99,13 +97,9 @@ class FirewallApp:
     def port_management_frame(self):
         """Manage blocked ports."""
         st.header("Port Management")
-
-        # Input section
         col1, col2 = st.columns([3, 1])
         with col1:
             port = st.text_input("Port to Block/Unblock", "")
-
-        # Buttons placed below the input field and side by side
         col1, col2 = st.columns(2)
         with col1:
             if st.button("Block Port"):
@@ -117,8 +111,6 @@ class FirewallApp:
                 if port:
                     message = remove_port_from_blocklist(port)
                     display_message(message, success="unblocked" in message)
-
-        # Blocked Ports List
         st.subheader("Blocked Ports")
         for blocked_port in blocked_ports:
             col1, col2 = st.columns([3, 1])
@@ -156,3 +148,27 @@ class FirewallApp:
             if port_to_check:
                 result = check_blocked_port(port_to_check)
                 display_message(result, success="open" in result)
+
+    def firewall_statistics_page(self):
+        """Display Firewall Statistics (Donut Chart)."""
+        st.header("Firewall Statistics")
+
+        # Data for the Donut chart
+        labels = ["Blocked IPs", "Blocked Ports"]
+        values = [len(blocked_ips), len(blocked_ports)]
+
+        # Create a donut chart using Plotly
+        # Create a donut chart using Plotly
+        # Create a donut chart using Plotly
+        fig = go.Figure(data=[go.Pie(
+            labels=labels,
+            values=values,
+            hole=0.4,  # Make it a donut chart
+            textinfo="percent+label",
+            marker=dict(colors=['#87CEEB', '#A9A9A9'])  # Darker shade of light blue and light grey
+        )])
+
+
+        # Show the donut chart
+        st.plotly_chart(fig)
+
