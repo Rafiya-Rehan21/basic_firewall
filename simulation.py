@@ -1,9 +1,12 @@
 import platform
 import subprocess
-from firewall.rules import blocked_ips, blocked_ports
+from firewall.rules import blocked_ips, blocked_ports, is_valid_ip, is_valid_port
 
 def ping_ip(ip):
     """Ping the given IP address and return detailed results with statistics."""
+    
+    if not is_valid_ip(ip):
+        return "Invalid IP address."
     
     if ip in blocked_ips:
         return "Connection blocked. The IP is in the blocklist."
@@ -29,6 +32,10 @@ def ping_ip(ip):
     
 def check_blocked_port(port):
     """Simulate checking if a port is blocked."""
+    
+    if not is_valid_port(port):
+        return "Invalid port number."
+    
     if port in blocked_ports:
         return f"Port {port} is blocked."
     else:

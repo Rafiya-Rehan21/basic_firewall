@@ -157,9 +157,6 @@ class FirewallApp:
         labels = ["Blocked IPs", "Blocked Ports"]
         values = [len(blocked_ips), len(blocked_ports)]
 
-        # Create a donut chart using Plotly
-        # Create a donut chart using Plotly
-        # Create a donut chart using Plotly
         fig = go.Figure(data=[go.Pie(
             labels=labels,
             values=values,
