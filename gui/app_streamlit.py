@@ -19,10 +19,8 @@ def display_message(message, success=True):
     else:
         st.error(message)
 
-# UI for Firewall Management
 class FirewallApp:
     def __init__(self):
-        # Set up the Streamlit app layout
         st.set_page_config(page_title="Firewall Manager", layout="wide")
         self.create_navbar()
         self.create_frames()
@@ -38,7 +36,7 @@ class FirewallApp:
             "Clear Rules",
             "IP Simulation",
             "Port Simulation",
-            "Firewall Statistics",  # New option
+            "Firewall Statistics",  
         ]
         self.selected_option = st.sidebar.radio("Select an option", options)
 
@@ -59,7 +57,7 @@ class FirewallApp:
         elif self.selected_option == "Port Simulation":
             self.port_simulation_frame()
         elif self.selected_option == "Firewall Statistics":
-            self.firewall_statistics_page()  # New page for stats
+            self.firewall_statistics_page()  
             
     def home_page(self):
         """Display the home page."""
@@ -160,12 +158,9 @@ class FirewallApp:
         fig = go.Figure(data=[go.Pie(
             labels=labels,
             values=values,
-            hole=0.4,  # Make it a donut chart
+            hole=0.4,  
             textinfo="percent+label",
-            marker=dict(colors=['#87CEEB', '#A9A9A9'])  # Darker shade of light blue and light grey
+            marker=dict(colors=['#87CEEB', '#A9A9A9'])  
         )])
 
-
-        # Show the donut chart
         st.plotly_chart(fig)
-
